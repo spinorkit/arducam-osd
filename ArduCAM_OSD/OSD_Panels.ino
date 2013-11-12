@@ -184,15 +184,20 @@ void panSetup(){
         osd.setPanel(5, 7);
         osd.openPanel();
 
-        if (chan1_raw_middle == 0 && chan2_raw_middle == 0){
-            chan1_raw_middle = chan1_raw;
-            chan2_raw_middle = chan2_raw;
+        if (chan_raw_middle[0] == 0 && chan_raw_middle[1] == 0){
+            chan_raw_middle[0] = chan_raw[0];
+            chan_raw_middle[1] = chan_raw[1];
         }
 
-        if ((chan2_raw - 100) > chan2_raw_middle ) setup_menu++;  //= setup_menu + 1;
-        else if ((chan2_raw + 100) < chan2_raw_middle ) setup_menu--;  //= setup_menu - 1;
-        if (setup_menu < 0) setup_menu = 0;
-        else if (setup_menu > 2) setup_menu = 2;
+        if (chan_raw[1] > chan_raw_middle[1] + 100)
+            setup_menu++;
+        else if (chan_raw[1] + 100 < chan_raw_middle[1])
+            setup_menu--;
+        
+        if (setup_menu < 0)
+            setup_menu = 0;
+        else if (setup_menu > 2)
+            setup_menu = 2;
 
         switch (setup_menu){
         case 0:
@@ -234,10 +239,13 @@ void panSetup(){
 int change_val(int value, int address)
 {
     uint8_t value_old = value;
-    if (chan1_raw > chan1_raw_middle + 100) value--;
-    if (chan1_raw  < chan1_raw_middle - 100) value++;
+    if (chan_raw[0] > chan_raw_middle[0] + 100)
+        value--;
+    if (chan_raw[0] + 100 < chan_raw_middle[0])
+        value++;
 
-    if(value != value_old && setup_menu ) EEPROM.write(address, value);
+    if (value != value_old && setup_menu )
+        EEPROM.write(address, value);
     return value;
 }
 
@@ -267,49 +275,8 @@ void panWindSpeed(int first_col, int first_line){
 // Staus  : done
 
 void panOff(){
-    if (ch_toggle == 4){
-        if (((apm_mav_type == 1) && ((osd_mode != 11) && (osd_mode != 1))) || ((apm_mav_type == 2) && ((osd_mode != 6) && (osd_mode != 7)))){
-            if (osd_off_switch != osd_mode){ 
-                osd_off_switch = osd_mode;
-                osd_switch_time = millis();
-
-                if (osd_off_switch == osd_switch_last){
-                    switch(panel){
-                    case 0:
-                        {
-                            panel = 1;                                                        
-                            if (millis() <= 60000){
-                                osd_set = 1;
-                            }else{
-                                osd_set = 0;
-                            }                            
-                            break;
-                        }
-                    case 1:
-                        {
-                            panel = npanels;
-                            osd_set = 0;                            
-                            break;
-                        }
-                    case npanels:
-                        {
-                            panel = 0;
-                            break;
-                        }
-                    }
-                    osd.clear();
-                }
-            }
-            if ((millis() - osd_switch_time) > 2000){
-                osd_switch_last = osd_mode;
-            }
-        }
-    }
-    else {
-        if(ch_toggle == 5) ch_raw = osd_chan5_raw;
-        else if(ch_toggle == 6) ch_raw = osd_chan6_raw;
-        else if(ch_toggle == 7) ch_raw = osd_chan7_raw;
-        else if(ch_toggle == 8) ch_raw = osd_chan8_raw;
+    if (ch_toggle >= 5 && ch_toggle <= 8) {
+        uint16_t ch_raw = chan_raw[ch_toggle-1];
 
         if (switch_mode == 0){
             if (ch_raw > 1800) {
@@ -326,15 +293,15 @@ void panOff(){
                 osd.clear();
                 panel = 0;
             }    
-
+    
             else if (ch_raw >= 1200 && ch_raw <= 1800 && setup_menu != 6 && panel != 1 && warning != 1) { //second panel
                 osd_set = 0;
                 osd.clear();
                 panel = 1;
             }        
         } else {
-
-            if (ch_raw > 1200)
+    
+            if (ch_raw > 1200) {
                 if (millis() <= 60000 && osd_set != 1){
                     if (osd_switch_time + 1000 < millis()){
                         osd_set = 1;
@@ -353,7 +320,8 @@ void panOff(){
                         osd_switch_time = millis();
                     }
                 }
-        }    
+            }    
+        }
     }
 }
 //* **************************************************************** */
@@ -505,14 +473,16 @@ void panWarn(int first_col, int first_line){
 
         text_timer = millis() + 1000; // blink every 1 secs
         if (warning == 1){ 
-            if (panel == 1) osd.clear();
+            if (panel == 1)
+                osd.clear();
             panel = 0; // turn OSD on if there is a warning                  
         }
+        
         char* warning_string;
-        if (motor_armed == 0){
+        if (armed == 0) {
             warning_string = "\x20\x20\x44\x49\x53\x41\x52\x4d\x45\x44\x20\x20";      
-        }else{
-            switch(warning_type){ 
+        } else {
+            switch(warning_type) {
             case 0:
                 //osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20"));
                 warning_string = "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20";
@@ -775,7 +745,7 @@ void panRose(int first_col, int first_line){
     osd.openPanel();
     //osd_heading  = osd_yaw;
     //if(osd_yaw < 0) osd_heading = 360 + osd_yaw;
-    osd.printf("%s|%c%s%c", "\x20\xc0\xc0\xc0\xc0\xc0\xc7\xc0\xc0\xc0\xc0\xc0\x20", 0xd0, buf_show, 0xd1);
+    osd.printf("%s|%c%s%c", "\x20\xc0\xc0\xc0\xc0\xc0\xc7\xc0\xc0\xc0\xc0\xc0\x20", 0xd0, heading_buf, 0xd1);
     osd.closePanel();
 }
 
@@ -873,29 +843,72 @@ void panFlightMode(int first_col, int first_line){
     osd.setPanel(first_col, first_line);
     osd.openPanel();
     //char c1 = 0xE0 ;//"; char c2; char c3; char c4; char c5; 
+    boolean rotary_wing = (mav_type == 2 || mav_type == 3 || mav_type == 4 || mav_type == 13 || mav_type == 14 || mav_type == 15);
+
     char* mode_str="";
-    if (apm_mav_type == 2){ //ArduCopter MultiRotor or ArduCopter Heli
-        if (osd_mode == 0) mode_str = "stab"; //Stabilize
-        else if (osd_mode == 1) mode_str = "acro"; //Acrobatic
-        else if (osd_mode == 2) mode_str = "alth"; //Alt Hold
-        else if (osd_mode == 3) mode_str = "auto"; //Auto
-        else if (osd_mode == 4) mode_str = "guid"; //Guided
-        else if (osd_mode == 5) mode_str = "loit"; //Loiter
-        else if (osd_mode == 6) mode_str = "retl"; //Return to Launch
-        else if (osd_mode == 7) mode_str = "circ"; //Circle
-        else if (osd_mode == 8) mode_str = "posi"; //Position
-        else if (osd_mode == 9) mode_str = "land"; //Land
-        else if (osd_mode == 10) mode_str = "oflo"; //OF_Loiter
-    } else if(apm_mav_type == 1){ //ArduPlane
-        if (osd_mode == 0) mode_str = "manu"; //Manual
-        else if (osd_mode == 1) mode_str = "circ"; //CIRCLE
-        else if (osd_mode == 2) mode_str = "stab"; //Stabilize
-        else if (osd_mode == 5) mode_str = "fbwa"; //FLY_BY_WIRE_A
-        else if (osd_mode == 6) mode_str = "fbwb"; //FLY_BY_WIRE_B
-        else if (osd_mode == 10) mode_str = "auto"; //AUTO
-        else if (osd_mode == 11) mode_str = "retl"; //Return to Launch
-        else if (osd_mode == 12) mode_str = "loit"; //Loiter
-        else if (osd_mode == 15) mode_str = "guid"; //GUIDED
+    if (autopilot == 3) {  // APM
+        if (rotary_wing) {  // Rotary Wing
+            if (custom_mode == 0)
+                mode_str = "stab"; // Stabilize
+            else if (custom_mode == 1)
+                mode_str = "acro"; // Acrobatic
+            else if (custom_mode == 2)
+                mode_str = "alth"; // Alt Hold
+            else if (custom_mode == 3)
+                mode_str = "auto"; // Auto
+            else if (custom_mode == 4)
+                mode_str = "guid"; // Guided
+            else if (custom_mode == 5)
+                mode_str = "loit"; // Loiter
+            else if (custom_mode == 6)
+                mode_str = "retl"; // Return to Launch
+            else if (custom_mode == 7)
+                mode_str = "circ"; // Circle
+            else if (custom_mode == 8)
+                mode_str = "posi"; // Position
+            else if (custom_mode == 9)
+                mode_str = "land"; // Land
+            else if (custom_mode == 10)
+                mode_str = "oflo"; // OF_Loiter
+            
+        } else if (mav_type == 1) {  // Fixed Wing
+            if (custom_mode == 0)
+                mode_str = "manu"; // Manual
+            else if (custom_mode == 1)
+                mode_str = "circ"; // CIRCLE
+            else if (custom_mode == 2)
+                mode_str = "stab"; // Stabilize
+            else if (custom_mode == 5)
+                mode_str = "fbwa"; // FLY_BY_WIRE_A
+            else if (custom_mode == 6)
+                mode_str = "fbwb"; // FLY_BY_WIRE_B
+            else if (custom_mode == 10)
+                mode_str = "auto"; // AUTO
+            else if (custom_mode == 11)
+                mode_str = "retl"; // Return to Launch
+            else if (custom_mode == 12)
+                mode_str = "loit"; // Loiter
+            else if (custom_mode == 15)
+                mode_str = "guid"; // GUIDED
+        }
+    } else if (autopilot == 12) {  // PX4
+        union {
+            struct {
+                uint16_t reserved;
+                uint8_t main_mode;
+                uint8_t sub_mode;
+            };
+            uint32_t data;
+        } px4_custom_mode;
+        px4_custom_mode.data = custom_mode;
+        if (px4_custom_mode.main_mode == 1)
+            mode_str = "manu"; // Manual
+        else if (px4_custom_mode.main_mode == 2)
+            mode_str = "seat"; // Seatbelt
+        else if (px4_custom_mode.main_mode == 3)
+            mode_str = "easy"; // Easy
+        else if (px4_custom_mode.main_mode == 4)
+            mode_str = "auto"; // Auto
     }
     osd.printf("%c%s", 0xE0, mode_str);
     osd.closePanel();

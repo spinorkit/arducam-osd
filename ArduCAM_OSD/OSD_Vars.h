@@ -1,5 +1,4 @@
 /*Panels variables*/
-//Will come from APM telem port
 
 static float	    nav_roll = 0; // Current desired roll in degrees
 static float        nav_pitch = 0; // Current desired pitch in degrees
@@ -13,13 +12,14 @@ static float        aspd_error = 0; // Current airspeed error in meters/second
 static float	    xtrack_error = 0; // Current crosstrack error on x-y plane in meters
 static float        eff = 0; //Efficiency
 
-static uint8_t      base_mode=0;
-static bool         motor_armed = 0;
+static uint8_t      autopilot = 0;
+static uint8_t      base_mode = 0;
+static uint32_t     custom_mode = 0;
+static bool         armed = 0;
 
-static int16_t      chan1_raw = 0;
-static int16_t      chan2_raw = 0;
-static int16_t      chan1_raw_middle = 0;
-static int16_t      chan2_raw_middle = 0;
+static uint16_t     chan_raw[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+static uint16_t     chan_raw_middle[2] = {0, 0};
+
 static uint8_t      ch_toggle = 0;
 static boolean      osd_set = 0;
 static boolean      switch_mode = 0;
@@ -45,8 +45,6 @@ static uint8_t      batt_warn_level = 0;
 //static uint16_t   osd_battery_remaining_B = 0;  // 0 to 100 <=> 0 to 1000
 //static uint8_t    osd_battery_pic_B = 0xb4;     // picture to show battery remaining
 static float        start_Time = -1.0;
-static uint8_t      osd_mode = 0;                   // Navigation mode from RC AC2 = CH5, APM = CH8
-static uint8_t      osd_nav_mode = 0;               // Navigation mode from RC AC2 = CH5, APM = CH8
 static unsigned long text_timer = 0;
 static unsigned long warning_timer =0;
 
@@ -99,9 +97,9 @@ static char         char_call[OSD_CALL_SIGN_TOTAL+1] = {0};
 static boolean      mavbeat = 0;
 static float        lastMAVBeat = 0;
 static boolean      waitingMAVBeats = 1;
-static uint8_t      apm_mav_type;
-static uint8_t      apm_mav_system; 
-static uint8_t      apm_mav_component;
+static uint8_t      mav_type;
+static uint8_t      mav_system;
+static uint8_t      mav_component;
 static boolean      enable_mav_request = 0;
 
 static const uint8_t npanels = 2;
@@ -166,10 +164,4 @@ static uint8_t      osd_rssi = 0; //raw value from mavlink
 static int16_t      rssi = -99; // scaled value 0-100%
 static bool         rssiraw_on = false; // 0- display scale value | 1- display raw value
 static uint8_t      rssi_warn_level = 0;
-
-static uint16_t     ch_raw = 0;
-static uint16_t     osd_chan5_raw = 1000;
-static uint16_t     osd_chan6_raw = 1000;
-static uint16_t     osd_chan7_raw = 1000;
-static uint16_t     osd_chan8_raw = 1000;
 

@@ -20,7 +20,7 @@ void request_mavlink_rates()
     const uint16_t MAVRates[maxStreams] = {0x02, 0x02, 0x05, 0x02, 0x05, 0x02};
     for (int i=0; i < maxStreams; i++) {
         mavlink_msg_request_data_stream_send(MAVLINK_COMM_0,
-            apm_mav_system, apm_mav_component,
+            mav_system, mav_component,
             MAVStreams[i], MAVRates[i], 1);
     }
 }
@@ -54,17 +54,19 @@ void read_mavlink(){
             case MAVLINK_MSG_ID_HEARTBEAT:
                 {
                     mavbeat = 1;
-                    apm_mav_system    = msg.sysid;
-                    apm_mav_component = msg.compid;
-                    apm_mav_type      = mavlink_msg_heartbeat_get_type(&msg);            
-                 //   osd_mode = mavlink_msg_heartbeat_get_custom_mode(&msg);
-                    osd_mode = (uint8_t)mavlink_msg_heartbeat_get_custom_mode(&msg);
-                    //Mode (arducoper armed/disarmed)
+                    mav_system    = msg.sysid;
+                    mav_component = msg.compid;
+                    mav_type      = mavlink_msg_heartbeat_get_type(&msg);
+                    autopilot     = mavlink_msg_heartbeat_get_autopilot(&msg);
+                    base_mode   = mavlink_msg_heartbeat_get_base_mode(&msg);
+                    custom_mode   = mavlink_msg_heartbeat_get_custom_mode(&msg);
+                    //Mode (armed/disarmed)
                     base_mode = mavlink_msg_heartbeat_get_base_mode(&msg);
-                    if(getBit(base_mode,7)) motor_armed = 1;
-                    else motor_armed = 0;
+                    if(getBit(base_mode,7))
+                        armed = 1;
+                    else
+                        armed = 0;
 
-                    osd_nav_mode = 0;          
                     lastMAVBeat = millis();
                     if(waitingMAVBeats == 1){
                         enable_mav_request = 1;
@@ -73,12 +75,9 @@ void read_mavlink(){
                 break;
             case MAVLINK_MSG_ID_SYS_STATUS:
                 {
-
                     osd_vbat_A = (mavlink_msg_sys_status_get_voltage_battery(&msg) / 1000.0f); //Battery voltage, in millivolts (1 = 1 millivolt)
                     osd_curr_A = mavlink_msg_sys_status_get_current_battery(&msg); //Battery current, in 10*milliamperes (1 = 10 milliampere)         
                     osd_battery_remaining_A = mavlink_msg_sys_status_get_battery_remaining(&msg); //Remaining battery energy: (0%: 0, 100%: 100)
-                    //osd_mode = apm_mav_component;//Debug
-                    //osd_nav_mode = apm_mav_system;//Debug
                 }
                 break;
 
@@ -107,6 +106,7 @@ void read_mavlink(){
                     osd_pitch = ToDeg(mavlink_msg_attitude_get_pitch(&msg));
                     osd_roll = ToDeg(mavlink_msg_attitude_get_roll(&msg));
                     osd_yaw = ToDeg(mavlink_msg_attitude_get_yaw(&msg));
+                    osd_heading = osd_yaw;
                 }
                 break;
             case MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT:
@@ -128,12 +128,14 @@ void read_mavlink(){
                 break;
             case MAVLINK_MSG_ID_RC_CHANNELS_RAW:
                 {
-                    chan1_raw = mavlink_msg_rc_channels_raw_get_chan1_raw(&msg);
-                    chan2_raw = mavlink_msg_rc_channels_raw_get_chan2_raw(&msg);
-                    osd_chan5_raw = mavlink_msg_rc_channels_raw_get_chan5_raw(&msg);
-                    osd_chan6_raw = mavlink_msg_rc_channels_raw_get_chan6_raw(&msg);
-                    osd_chan7_raw = mavlink_msg_rc_channels_raw_get_chan7_raw(&msg);
-                    osd_chan8_raw = mavlink_msg_rc_channels_raw_get_chan8_raw(&msg);
+                    chan_raw[0] = mavlink_msg_rc_channels_raw_get_chan1_raw(&msg);
+                    chan_raw[1] = mavlink_msg_rc_channels_raw_get_chan2_raw(&msg);
+                    chan_raw[2] = mavlink_msg_rc_channels_raw_get_chan2_raw(&msg);
+                    chan_raw[3] = mavlink_msg_rc_channels_raw_get_chan2_raw(&msg);
+                    chan_raw[4] = mavlink_msg_rc_channels_raw_get_chan5_raw(&msg);
+                    chan_raw[5] = mavlink_msg_rc_channels_raw_get_chan6_raw(&msg);
+                    chan_raw[6] = mavlink_msg_rc_channels_raw_get_chan7_raw(&msg);
+                    chan_raw[7] = mavlink_msg_rc_channels_raw_get_chan8_raw(&msg);
                     osd_rssi = mavlink_msg_rc_channels_raw_get_rssi(&msg);
                 }
                 break;
