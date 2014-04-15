@@ -1057,9 +1057,9 @@ void printHit(byte col, byte row, byte subval){
 void do_converts()
 {
     if (EEPROM.read(measure_ADDR) == 0) {
-        converts = 3.6;
+        converts = 1.0;
         converth = 1.0;
-        spe = 0x81;
+        spe = 0x88;
         high = 0x8D;
     } else {
         converts = 2.23;
