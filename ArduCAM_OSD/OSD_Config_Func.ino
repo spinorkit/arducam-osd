@@ -192,13 +192,17 @@ void readPanelSettings() {
     panTune_XY[0][panel] = readEEPROM(panTune_x_ADDR + offset);
     panTune_XY[1][panel] = checkPAL(readEEPROM(panTune_y_ADDR + offset));
 
-    setBit(panD_REG[panel], Eff_BIT, readEEPROM(panEff_en_ADDR + offset));
-    panEff_XY[0][panel] = readEEPROM(panEff_x_ADDR + offset);
-    panEff_XY[1][panel] = checkPAL(readEEPROM(panEff_y_ADDR + offset));
+    //setBit(panD_REG[panel], Eff_BIT, readEEPROM(panEff_en_ADDR + offset));
+    //panEff_XY[0][panel] = readEEPROM(panEff_x_ADDR + offset);
+    //panEff_XY[1][panel] = checkPAL(readEEPROM(panEff_y_ADDR + offset));
 
     setBit(panD_REG[panel], CALLSIGN_BIT, readEEPROM(panCALLSIGN_en_ADDR + offset));
     panCALLSIGN_XY[0][panel] = readEEPROM(panCALLSIGN_x_ADDR + offset);
     panCALLSIGN_XY[1][panel] = checkPAL(readEEPROM(panCALLSIGN_y_ADDR + offset));
+    
+    setBit(panD_REG[panel], RadioRSSI_BIT, readEEPROM(panRadioRSSI_en_ADDR + offset));
+    panRadioRSSI_XY[0][panel] = readEEPROM(panRadioRSSI_x_ADDR + offset);
+    panRadioRSSI_XY[1][panel] = checkPAL(readEEPROM(panRadioRSSI_y_ADDR + offset));
 }
 
 int checkPAL(int line){

@@ -183,7 +183,6 @@ namespace OSD
             panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("Home Distance", pan.panHomeDis, 22, 1, panHomeDis_en_ADDR, panHomeDis_x_ADDR, panHomeDis_y_ADDR);
             panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("WP Direction", pan.panWPDir, 20, 12, panWPDir_en_ADDR, panWPDir_x_ADDR, panWPDir_y_ADDR);
             panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("WP Distance", pan.panWPDis, 20, 11, panWPDis_en_ADDR, panWPDis_x_ADDR, panWPDis_y_ADDR);
-            // rssi
 
             // third 8
             panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("Altitude", pan.panAlt, 22, 3, panAlt_en_ADDR, panAlt_x_ADDR, panAlt_y_ADDR);
@@ -203,11 +202,13 @@ namespace OSD
             
             panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("Warnings", pan.panWarn, 9, 4, panWarn_en_ADDR, panWarn_x_ADDR, panWarn_y_ADDR);
             panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("Time", pan.panTime, 22, 4, panTime_en_ADDR, panTime_x_ADDR, panTime_y_ADDR);
-            panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("RSSI", pan.panRSSI, 12, 12, panRSSI_en_ADDR, panRSSI_x_ADDR, panRSSI_y_ADDR);
+            panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("RC RSSI", pan.panRSSI, 12, 12, panRSSI_en_ADDR, panRSSI_x_ADDR, panRSSI_y_ADDR);
             panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("Tune", pan.panTune, 1, 1, panTune_en_ADDR, panTune_x_ADDR, panTune_y_ADDR);
-            panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("Efficiency", pan.panEff, 1, 3, panEff_en_ADDR, panEff_x_ADDR, panEff_y_ADDR);
+            //panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("Efficiency", pan.panEff, 1, 3, panEff_en_ADDR, panEff_x_ADDR, panEff_y_ADDR);
             panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("Call Sign", pan.panCALLSIGN, 1, 0, panCALLSIGN_en_ADDR, panCALLSIGN_x_ADDR, panCALLSIGN_y_ADDR);
             panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("Channel Raw", pan.panCh, 1, 0, panCh_en_ADDR, panCh_x_ADDR, panCh_y_ADDR);
+
+            panelItems[a++] = new Tuple<string, Func<int, int, int>, int, int, int, int, int>("Radio RSSI", pan.panRadioRSSI, 12, 12, panRadioRSSI_en_ADDR, panRadioRSSI_x_ADDR, panRadioRSSI_y_ADDR);
 
 
             nosdfunctions = a;
@@ -1249,7 +1250,7 @@ namespace OSD
         /* *********************************************** */
         // Version number, incrementing this will erase/upload factory settings.
         // Only devs should increment this
-        const int VER = 76;
+        const int VER = 77;
         // EEPROM Storage addresses
         const int OffsetBITpanel = 250;
         // First of 8 panels
@@ -1363,6 +1364,10 @@ namespace OSD
         const int panCh_en_ADDR = 206;
         const int panCh_x_ADDR = 208;
         const int panCh_y_ADDR = 210;
+        const int panRadioRSSI_en_ADDR = 212;
+        const int panRadioRSSI_x_ADDR = 214;
+        const int panRadioRSSI_y_ADDR = 216;
+
         //
         const int measure_ADDR = 890;
         const int overspeed_ADDR = 892;

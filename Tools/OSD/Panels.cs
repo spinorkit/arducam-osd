@@ -134,6 +134,25 @@ namespace OSD
         /******* PANELS - DEFINITION *******/
 
         /* **************************************************************** */
+        // Panel  : panRadioRSSI
+        // Needs  : X, Y locations
+        // Output : Shows RSSI values for both radios (remote and groundstation)
+        // Size   : 2 x 4 (rows x chars)
+        // Staus  : done
+
+        public int panRadioRSSI(int first_col, int first_line)
+        {
+            osd.setPanel(first_col, first_line);
+            osd.openPanel();
+
+            osd.printf("%c%3i", 0x8b, 255);
+            osd.printf("|");
+            osd.printf("%c%3i", 0x8c, 255);
+            osd.closePanel();
+            return 0;
+        }
+
+        /* **************************************************************** */
         // Panel  : PanCh
         // Needs  : X, Y locations
         // Output : 

@@ -4,7 +4,7 @@
 
 // Version number, incrementing this will erase/upload factory settings.
 // Only devs should increment this
-#define VER 76
+#define VER 77
 
 // EEPROM Stepping, be careful not to overstep. 
 // We reserved floats for just to be sure if some values needs to be
@@ -52,7 +52,8 @@
 #define Tune_BIT       4
 #define CALLSIGN_BIT   5
 #define RSSI_BIT       6
-#define Eff_BIT        7
+//#define Eff_BIT        7
+#define RadioRSSI_BIT  7
 
 /* *********************************************** */
 // EEPROM Storage addresses
@@ -167,6 +168,15 @@
 #define panCALLSIGN_en_ADDR 200
 #define panCALLSIGN_x_ADDR 202
 #define panCALLSIGN_y_ADDR 204
+
+// these were defined in the osd config tool
+#define panCh_en_ADDR 206
+#define panCh_x_ADDR 208
+#define panCh_y_ADDR 210
+
+#define panRadioRSSI_en_ADDR 212
+#define panRadioRSSI_x_ADDR 214
+#define panRadioRSSI_y_ADDR 216
 
 #define measure_ADDR 890
 #define overspeed_ADDR 892

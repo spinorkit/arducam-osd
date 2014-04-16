@@ -72,6 +72,8 @@ void writePanels(){
                 if(ISd(panel,RSSI_BIT)) panRSSI(panRSSI_XY[0][panel], panRSSI_XY[1][panel]); //??x??
                 //if(ISd(panel,Eff_BIT)) panEff(panEff_XY[0][panel], panEff_XY[1][panel]);
                 if(ISd(panel,CALLSIGN_BIT)) panCALLSIGN(panCALLSIGN_XY[0][panel], panCALLSIGN_XY[1][panel]);
+                
+                if(ISd(panel,RadioRSSI_BIT)) panRadioRSSI(panRadioRSSI_XY[0][panel] + 1, panRadioRSSI_XY[1][panel]); //4x2
            } else { //panel == npanels
                 if(ISd(0,Warn_BIT)) panWarn(panWarn_XY[0][0], panWarn_XY[1][0]); // this must be here so warnings are always checked
                 if(ISd(0,CALLSIGN_BIT)) panCALLSIGN(panCALLSIGN_XY[0][panel], panCALLSIGN_XY[1][panel]); //call sign even in off panel
@@ -133,6 +135,26 @@ void panEff(int first_col, int first_line){
     }
     osd.closePanel();
 }
+
+/* **************************************************************** */
+// Panel  : panRadioRSSI
+// Needs  : X, Y locations
+// Output : Shows RSSI values for both radios (remote and groundstation)
+// Size   : 2 x 4 (rows x chars)
+// Staus  : done
+
+void panRadioRSSI(int first_col, int first_line){
+    osd.setPanel(first_col, first_line);
+    osd.openPanel();
+    int16_t rssi = (int16_t)radio_rssi;
+    int16_t remrssi = (int16_t)radio_remrssi;
+
+    osd.printf("%c%3i", 0x8b, remrssi);
+    osd.printf("|");
+    osd.printf("%c%3i", 0x8c, rssi);
+    osd.closePanel();
+}
+
 
 /* **************************************************************** */
 // Panel  : panRSSI
