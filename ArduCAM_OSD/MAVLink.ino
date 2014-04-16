@@ -143,6 +143,12 @@ void read_mavlink(){
                     osd_windspeedz = mavlink_msg_wind_get_speed_z(&msg); //m/s
                 }
                 break;
+            case MAVLINK_MSG_ID_RADIO:
+                {
+                    radio_rssi = mavlink_msg_radio_get_rssi(&msg);
+                    radio_remrssi = mavlink_msg_radio_get_remrssi(&msg);
+                }
+                break;
             default:
                 //Do nothing
                 break;
