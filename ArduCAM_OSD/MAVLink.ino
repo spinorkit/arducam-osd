@@ -1,5 +1,6 @@
 #include "../GCS_MAVLink/include/mavlink/v1.0/mavlink_types.h"
-#include "../GCS_MAVLink/include/mavlink/v1.0/ardupilotmega/mavlink.h"
+//#include "../GCS_MAVLink/include/mavlink/v1.0/ardupilotmega/mavlink.h"
+#include "../GCS_MAVLink/include/mavlink/v1.0/pixhawk/mavlink.h"
 
 // true when we have received at least 1 MAVLink packet
 static bool mavlink_active;
@@ -136,17 +137,17 @@ void read_mavlink(){
                     osd_rssi = mavlink_msg_rc_channels_raw_get_rssi(&msg);
                 }
                 break;
-            case MAVLINK_MSG_ID_WIND:
+//            case MAVLINK_MSG_ID_WIND:
+//                {
+//                    osd_winddirection = mavlink_msg_wind_get_direction(&msg); // 0..360 deg, 0=north
+//                    osd_windspeed = mavlink_msg_wind_get_speed(&msg); //m/s
+//                    osd_windspeedz = mavlink_msg_wind_get_speed_z(&msg); //m/s
+//                }
+//                break;
+            case MAVLINK_MSG_ID_RADIO_STATUS:
                 {
-                    osd_winddirection = mavlink_msg_wind_get_direction(&msg); // 0..360 deg, 0=north
-                    osd_windspeed = mavlink_msg_wind_get_speed(&msg); //m/s
-                    osd_windspeedz = mavlink_msg_wind_get_speed_z(&msg); //m/s
-                }
-                break;
-            case MAVLINK_MSG_ID_RADIO:
-                {
-                    radio_rssi = mavlink_msg_radio_get_rssi(&msg);
-                    radio_remrssi = mavlink_msg_radio_get_remrssi(&msg);
+                    radio_rssi = mavlink_msg_radio_status_get_rssi(&msg);
+                    radio_remrssi = mavlink_msg_radio_status_get_remrssi(&msg);
                 }
                 break;
             default:
