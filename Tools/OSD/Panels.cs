@@ -581,27 +581,18 @@ namespace OSD
         {
             osd.setPanel(first_col, first_line);
             osd.openPanel();
-            switch (osd_fix_type)
+            if (osd_fix_type == 0 || osd_fix_type == 1)
             {
-                case 0:
-                    osd.printf_P(PSTR("\x10\x20"));
-                    break;
-                case 1:
-                    osd.printf_P(PSTR("\x10\x20"));
-                    break;
-                case 2:
-                    osd.printf_P(PSTR("\x11\x20"));//If not APM, x01 would show 2D fix
-                    break;
-                case 3:
-                    osd.printf_P(PSTR("\x11\x20"));//If not APM, x02 would show 3D fix
-                    break;
+                osd.printf_P(PSTR("\x10\x20"));
             }
-
-            /*  if(osd_fix_type <= 1) {
-            osd.printf_P(PSTR("\x10"));
-          } else {
-            osd.printf_P(PSTR("\x11"));
-          }  */
+            else if (osd_fix_type == 2)
+            {
+                osd.printf_P(PSTR("\x11\x01"));
+            }
+            else if (osd_fix_type == 3)
+            {
+                osd.printf_P(PSTR("\x11\x02"));
+            }
             osd.closePanel();
             return 0;
         }

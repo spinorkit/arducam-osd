@@ -684,17 +684,15 @@ void panWaitMAVBeats(int first_col, int first_line) {
 void panGPL(int first_col, int first_line) {
     osd.setPanel(first_col, first_line);
     osd.openPanel();
-    char* gps_str;
-    if (osd_fix_type == 0 || osd_fix_type == 1)
-        gps_str = "\x10\x20"; 
-    else if (osd_fix_type == 2 || osd_fix_type == 3)
-        gps_str = "\x11\x20";
-    osd.printf("%s",gps_str);
-    /*  if(osd_fix_type <= 1) {
-    osd.printf_P(PSTR("\x10"));
-    } else {
-    osd.printf_P(PSTR("\x11"));
-    }  */
+    if (osd_fix_type == 0 || osd_fix_type == 1) {
+        osd.printf_P(PSTR("\x10\x20"));
+    }
+    else if (osd_fix_type == 2) {
+        osd.printf_P(PSTR("\x11\x01"));
+    }
+    else if (osd_fix_type == 3) {
+        osd.printf_P(PSTR("\x11\x02"));
+    }
     osd.closePanel();
 }
 
