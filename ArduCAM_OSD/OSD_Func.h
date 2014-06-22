@@ -43,6 +43,8 @@ char setBatteryPic(uint16_t bat_level)
 
 //------------------ Home Distance and Direction Calculation ----------------------------------
 
+const int radar_dist[13] = {-10000, -3600, -1400, -500, -150, -50, 0, 50, 150, 500, 1400, 3600, 10000};
+
 void setHomeVars(OSD &osd)
 {
   float dstlon, dstlat;
@@ -74,9 +76,9 @@ void setHomeVars(OSD &osd)
     double scaleLongUp   = 1.0f/cos(rads);
 
     //DST to Home
-    dstlat = fabs(osd_home_lat - osd_lat) * 111319.5;
-    dstlon = fabs(osd_home_lon - osd_lon) * 111319.5 * scaleLongDown;
-    osd_home_distance = sqrt(sq(dstlat) + sq(dstlon));
+    osd_home_distance_y = (osd_home_lat - osd_lat) * 111319.5;
+    osd_home_distance_x = (osd_home_lon - osd_lon) * 111319.5 * scaleLongDown;
+    osd_home_distance = sqrt(sq(osd_home_distance_y) + sq(osd_home_distance_x));
 
     //DIR to Home
     dstlon = (osd_home_lon - osd_lon); //OffSet_X

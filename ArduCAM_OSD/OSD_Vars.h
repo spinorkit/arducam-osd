@@ -71,6 +71,8 @@ static float        osd_home_alt = 0;
 static long         osd_home_distance = 0;          // distance from home
 static uint8_t      osd_home_direction;             // Arrow direction pointing to home (1-16 to CW loop)
 static float        glide = 0;
+static long         osd_home_distance_x = 0;
+static long         osd_home_distance_y = 0;
 
 static int8_t       osd_pitch = 0;                  // pitch from DCM
 static int8_t       osd_roll = 0;                   // roll from DCM

@@ -65,8 +65,11 @@ void writePanels(){
                 //}
                 if(ISc(panel,Thr_BIT)) panThr(panThr_XY[0][panel], panThr_XY[1][panel]); //
                 if(ISc(panel,FMod_BIT)) panFlightMode(panFMod_XY[0][panel], panFMod_XY[1][panel]);  //
-                if(ISc(panel,Hor_BIT)) panHorizon(panHorizon_XY[0][panel], panHorizon_XY[1][panel]); //14x5
+                // horizon currently commented-out to save place
+                //if(ISc(panel,Hor_BIT)) panHorizon(panHorizon_XY[0][panel], panHorizon_XY[1][panel]); //14x5
                 if(ISc(panel,CurA_BIT)) panCur_A(panCur_A_XY[0][panel], panCur_A_XY[1][panel]);
+                
+                if(ISc(panel,Hor_BIT)) panRadar(panHorizon_XY[0][panel], panHorizon_XY[1][panel]); //12x8
 
                 //Testing bits from 8 bit register D 
                 //if(ISd(Off_BIT)) panOff(panOff_XY[0], panOff_XY[1]);
@@ -104,6 +107,65 @@ void writePanels(){
 }
 
 /******* PANELS - DEFINITION *******/
+
+/* **************************************************************** */
+// Panel  : panRadar
+// Needs  : X, Y locations
+// Output : Shows position relative to home
+// Size   : 8 x 12 (rows x chars)
+// Staus  : beta
+
+void panRadar(int first_col, int first_line){
+    int limit_x_l, limit_x_u, limit_y_l, limit_y_u;
+    int tiles = 12;
+    
+    // clear area
+    osd.setPanel(first_col, first_line);
+    osd.openPanel();
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20"));
+    osd.closePanel();
+    
+    // print center
+    osd.openSingle(first_col + 6, first_line + 3);
+    osd.printf("%c", 0x1f);
+    
+    for(int row = 0; row < tiles; row++){
+        limit_y_l = radar_dist[row];
+        limit_y_u = radar_dist[row + 1];
+        
+        int actualRow = floor(row / 1.5);
+        int offset = fmod(row, 1.5) * 2;
+    
+        for(int col = 0; col < tiles; col++){
+            limit_x_l = radar_dist[col];
+            limit_x_u = radar_dist[col + 1];
+            
+            if(limit_x_l <= osd_home_distance_x && osd_home_distance_x < limit_x_u
+                && limit_y_l <= osd_home_distance_y && osd_home_distance_y < limit_y_u){
+                osd.openSingle(first_col + col, first_line + actualRow);
+                switch(offset){
+                case 0:
+                    osd.printf("%c", 0x30);
+                    break;
+                case 1:
+                    osd.printf("%c", 0x31);
+                    break;
+                case 2:
+                    osd.printf("%c", 0x32);
+                    break;
+                }
+            }
+        }
+    }
+}
+
 
 /* **************************************************************** */
 // Panel  : efficiency
@@ -607,17 +669,17 @@ void panCenter(int first_col, int first_line) {
 // Size   : 14 x 4  (rows x chars)
 // Staus  : done
 
-void panHorizon(int first_col, int first_line) {
-    osd.setPanel(first_col, first_line);
-    osd.openPanel();
-    osd.printf_P(PSTR("\xc8\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xc9|"));
-    osd.printf_P(PSTR("\xc8\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xc9|"));
-    osd.printf_P(PSTR("\xd8\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xd9|"));
-    osd.printf_P(PSTR("\xc8\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xc9|"));
-    osd.printf_P(PSTR("\xc8\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xc9"));
-    osd.closePanel();
-    showHorizon((first_col + 1), first_line);
-}
+//void panHorizon(int first_col, int first_line) {
+//    osd.setPanel(first_col, first_line);
+//    osd.openPanel();
+//    osd.printf_P(PSTR("\xc8\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xc9|"));
+//    osd.printf_P(PSTR("\xc8\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xc9|"));
+//    osd.printf_P(PSTR("\xd8\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xd9|"));
+//    osd.printf_P(PSTR("\xc8\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xc9|"));
+//    osd.printf_P(PSTR("\xc8\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xc9"));
+//    osd.closePanel();
+//    showHorizon((first_col + 1), first_line);
+//}
 
 /* **************************************************************** */
 // Panel  : panPitch
