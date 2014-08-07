@@ -118,4 +118,17 @@ uint8_t mavlink_check_target(uint8_t sysid, uint8_t compid);
 // return a MAVLink variable type given a AP_Param type
 uint8_t mav_var_type(enum ap_var_type t);
 
+// added for compilation for Arduino
+#ifndef atanf
+    #define atanf atan
+#endif
+
+#ifndef atan2f
+    #define atan2f atan2
+#endif
+
+#ifndef fabsf
+    #define fabsf fabs
+#endif
+
 #endif // GCS_MAVLink_h
