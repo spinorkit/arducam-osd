@@ -152,13 +152,13 @@ void panRadar(int first_col, int first_line){
                 osd.openSingle(first_col + col, first_line + actualRow);
                 switch(offset){
                 case 0:
-                    osd.printf("%c", 0x30);
+                    osd.printf("%c", 0xba);
                     break;
                 case 1:
-                    osd.printf("%c", 0x31);
+                    osd.printf("%c", 0xbb);
                     break;
                 case 2:
-                    osd.printf("%c", 0x32);
+                    osd.printf("%c", 0xbc);
                     break;
                 }
             }
