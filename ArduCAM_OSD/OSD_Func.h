@@ -43,7 +43,7 @@ char setBatteryPic(uint16_t bat_level)
 
 //------------------ Home Distance and Direction Calculation ----------------------------------
 
-const int radar_dist[13] = {-10000, -3600, -1400, -500, -150, -50, 0, 50, 150, 500, 1400, 3600, 10000};
+const int radar_dist[12] = {-10000, -3600, -1400, -500, -150, -25, 25, 150, 500, 1400, 3600, 10000};
 
 void setHomeVars(OSD &osd)
 {

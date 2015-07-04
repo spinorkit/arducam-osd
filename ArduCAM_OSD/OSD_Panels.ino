@@ -68,8 +68,7 @@ void writePanels(){
                 // horizon currently commented-out to save place
                 //if(ISc(panel,Hor_BIT)) panHorizon(panHorizon_XY[0][panel], panHorizon_XY[1][panel]); //14x5
                 if(ISc(panel,CurA_BIT)) panCur_A(panCur_A_XY[0][panel], panCur_A_XY[1][panel]);
-                
-                if(ISc(panel,Hor_BIT)) panRadar(panHorizon_XY[0][panel], panHorizon_XY[1][panel]); //12x8
+                if(ISc(panel,Hor_BIT)) panRadar(panHorizon_XY[0][panel], panHorizon_XY[1][panel]); //11x7
 
                 //Testing bits from 8 bit register D 
                 //if(ISd(Off_BIT)) panOff(panOff_XY[0], panOff_XY[1]);
@@ -117,23 +116,23 @@ void writePanels(){
 
 void panRadar(int first_col, int first_line){
     int limit_x_l, limit_x_u, limit_y_l, limit_y_u;
-    int tiles = 12;
+    int tiles = 11;
     
     // clear area
     osd.setPanel(first_col, first_line);
     osd.openPanel();
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    //osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20"));
     osd.closePanel();
     
     // print center
-    osd.openSingle(first_col + 6, first_line + 3);
+    osd.openSingle(first_col + 5, first_line + 3);
     osd.printf("%c", 0x1f);
     
     for(int row = 0; row < tiles; row++){
