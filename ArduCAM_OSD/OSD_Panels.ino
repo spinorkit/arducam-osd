@@ -111,7 +111,7 @@ void writePanels(){
 // Panel  : panRadar
 // Needs  : X, Y locations
 // Output : Shows position relative to home
-// Size   : 8 x 12 (rows x chars)
+// Size   : 7 x 11 (rows x chars)
 // Staus  : beta
 
 void panRadar(int first_col, int first_line){
@@ -121,20 +121,16 @@ void panRadar(int first_col, int first_line){
     // clear area
     osd.setPanel(first_col, first_line);
     osd.openPanel();
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    for (int i = 0; i < 7; i++) {
+        osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
+    }
     osd.closePanel();
     
     // print center
     osd.openSingle(first_col + 5, first_line + 3);
     osd.printf("%c", 0x1f);
     
-    for(int row = 0; row < tiles; row++){
+    for(int row = tiles - 1; row >= 0; row--){
         limit_y_l = radar_dist[row];
         limit_y_u = radar_dist[row + 1];
         

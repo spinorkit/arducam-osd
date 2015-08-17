@@ -1,6 +1,6 @@
 #include "../GCS_MAVLink/include/mavlink/v1.0/mavlink_types.h"
 //#include "../GCS_MAVLink/include/mavlink/v1.0/ardupilotmega/mavlink.h"
-#include "../GCS_MAVLink/include/mavlink/v1.0/pixhawk/mavlink.h"
+#include "../GCS_MAVLink/include/mavlink/v1.0/common/mavlink.h"
 
 // true when we have received at least 1 MAVLink packet
 static bool mavlink_active;

@@ -76,8 +76,8 @@ void setHomeVars(OSD &osd)
     double scaleLongUp   = 1.0f/cos(rads);
 
     //DST to Home
-    osd_home_distance_y = (osd_home_lat - osd_lat) * 111319.5;
-    osd_home_distance_x = (osd_home_lon - osd_lon) * 111319.5 * scaleLongDown;
+    osd_home_distance_y = (osd_lat - osd_home_lat) * 111319.5;
+    osd_home_distance_x = (osd_lon - osd_home_lon) * 111319.5 * scaleLongDown;
     osd_home_distance = sqrt(sq(osd_home_distance_y) + sq(osd_home_distance_x));
 
     //DIR to Home
