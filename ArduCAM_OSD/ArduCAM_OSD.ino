@@ -179,7 +179,6 @@ void loop()
         enable_mav_request = 0;
         delay(2000);
         osd.clear();
-        waitingMAVBeats = 0;
         lastMAVBeat = millis();//Preventing error from delay sensing
     }
 

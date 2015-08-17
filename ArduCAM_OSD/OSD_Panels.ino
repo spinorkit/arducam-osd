@@ -11,8 +11,12 @@ void startPanels(){
 void panLogo(){
     osd.setPanel(7, 3);
     osd.openPanel();
-    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\xba\xbb\xbc\xbd\xbe|\x20\x20\x20\x20\x20\x20\xca\xcb\xcc\xcd\xce|\x20\x20\x20\x20\x20\x20SWISS|\x20\x20\x20\x20\x20\x20"));
-    osd.printf_P(PSTR("FANG\x20"));
+    osd.printf_P(PSTR("\x20|")); // for some reason this helps it keep the logo intact during wait on MAVLink
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\xba\xbb\xbc\xbd\xbe|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\xca\xcb\xcc\xcd\xce|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20SWISS|"));
+    osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20"));
+    osd.printf_P(PSTR("FANG"));
     osd.closePanel();
 }
 
@@ -82,12 +86,10 @@ void writePanels(){
             panSetup();
         }
     } else { // if no mavlink update for 2 secs
-
         // this could be replaced with a No Mavlink warning so the last seen values still show
-
-        osd.clear();
         waitingMAVBeats = 1;
         // Display our logo and wait... 
+        osd.clear();
         panWaitMAVBeats(5,10); //Waiting for MAVBeats...
     }
 

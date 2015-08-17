@@ -70,7 +70,9 @@ void read_mavlink(){
 
                     lastMAVBeat = millis();
                     if(waitingMAVBeats == 1){
-                        enable_mav_request = 1;
+                        enable_mav_request = 0; // temporarily disable requesting streams until we have implemented the new API
+                        osd.clear();
+                        waitingMAVBeats = 0;
                     }
                 }
                 break;
