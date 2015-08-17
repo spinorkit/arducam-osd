@@ -128,7 +128,6 @@ void panRadar(int first_col, int first_line){
     osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
     osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
     osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|"));
-    //osd.printf_P(PSTR("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20"));
     osd.closePanel();
     
     // print center
@@ -173,7 +172,7 @@ void panRadar(int first_col, int first_line){
 // Size   : 1 x 7Hea  (rows x chars)
 // Staus  : done
 
-void panEff(int first_col, int first_line){
+/*void panEff(int first_col, int first_line){
     osd.setPanel(first_col, first_line);
     osd.openPanel();
     if (osd_throttle > 2) {
@@ -197,7 +196,7 @@ void panEff(int first_col, int first_line){
         }
     }
     osd.closePanel();
-}
+}*/
 
 /* **************************************************************** */
 // Panel  : panRadioRSSI
