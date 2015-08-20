@@ -909,11 +909,27 @@ void panFlightMode(int first_col, int first_line){
         if (px4_custom_mode.main_mode == 1)
             mode_str = "manu"; // Manual
         else if (px4_custom_mode.main_mode == 2)
-            mode_str = "seat"; // Seatbelt
+            mode_str = "altc"; // Altitude control
         else if (px4_custom_mode.main_mode == 3)
-            mode_str = "easy"; // Easy
+            mode_str = "posc"; // Position control
         else if (px4_custom_mode.main_mode == 4)
-            mode_str = "auto"; // Auto
+            mode_str = "auto"; // Auto (ready)
+            if (px4_custom_mode.sub_mode == 2)
+                mode_str = "tkof"; // Takeoff
+            else if (px4_custom_mode.sub_mode == 3)
+                mode_str = "loit"; // Loiter
+            else if (px4_custom_mode.sub_mode == 4)
+                mode_str = "miss"; // Mission
+            else if (px4_custom_mode.sub_mode == 5)
+                mode_str = "rtl "; // Return to land
+            else if (px4_custom_mode.sub_mode == 6)
+                mode_str = "land"; // Landing
+        else if (px4_custom_mode.main_mode == 5)
+            mode_str = "acro"; // Acro mode (MC)
+        else if (px4_custom_mode.main_mode == 6)
+            mode_str = "offb"; // Offboard control
+        else if (px4_custom_mode.main_mode == 7)
+            mode_str = "stab"; // Stabilized mode (FW)
     }
     osd.printf("%c%s", 0xE0, mode_str);
     osd.closePanel();
