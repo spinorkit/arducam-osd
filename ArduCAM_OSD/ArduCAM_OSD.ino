@@ -38,6 +38,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
 /* **************** MAIN PROGRAM - MODULES ******************** */
 /* ************************************************************ */
 
+//select "Arduino Pro or Pro Mini (5V, 16MHz) w/ ATmega328"
+
 #undef PROGMEM 
 #define PROGMEM __attribute__(( section(".progmem.data") )) 
 
